@@ -1,0 +1,86 @@
+Wireshark: packet analyzer
+- Detects and troubleshoots network problems, detects anomalies, and investigates protocol details (repsonse codes and payload data)
+- NOT IDS: only allows investigation, no modification of packets
+
+GUI and Data
+- Toolbar: mitiple menus and shortcuts for sniffing and processing (filtering, sorting, summarising, exporting, and merging)
+- Display filter bar: main query and filtering section
+- Recent files
+- Capture filture and interfaces: network interface (software connections like lo, eth0, and ens33 enables networking hardware_
+- Status bar: tool status, profile, and numeric packet info
+- Packet list pane: summary of packets
+- Packet details pane: breakdown of selected packet
+- Packet bytes paine: hex and decoded ASCII representation of packet (raw data)
+- Packet coloring cusotmication options (permanent, temporary, and activation/deactivation)
+- Shark = sniffing, red = stop, green = restart
+
+Merge PCAP files
+- File-->merge menu path to merge pcap w/ the processed one into a single file
+
+View File details: working w/ many pcap files, can recall details this one to identify the file, classify, and prioritise it
+- statistics -> capture file properties OR by clicking pcap icon located on the left bottom of the window
+
+Packet Details
+- packets consist of 5 - 7 layers based on OSI model
+- click a detail, highlight corresponding part in packet bytes pane
+- Went over the layers of packets
+  1. frame layer 1: physical layer
+  2. Source MAC layer 2: src and dst MAC addresses
+  3. Source IP layer 3: IPv4 addresses for src and dst
+  4. Protocol layer 4: UDP/TCP plus src & dst ports
+  5. Protocol errors: segments from TCP that needed to be reassembled 
+  6. Application protocol layer 5: protocols like HTTP, FTP, SMB, etc.
+  7. Application data: extenstion of previous, w/ application-specific data
+
+TASKS
+ocated the: markup language under the HTTP protocol, arrival date of packet, TTL value, TCP payload size, and e-tag (a unique identifier assigned by a web server to a specific version of a resource. It's used to help web caches determine if a resource has changed since it was last accessed)
+
+Go to packet: easy way to find/investigate specific packets (like ctrl f for packet #s)
+Edit -> find packet: make a search inside the packets for a particular event of interest (or actual ctrl f)
+- to find packets: 1. know the input type (display filter ,hex, string, and regex)
+                      - string and regex are most commonly used
+                   2. choosing the search field (packet list, details, and bytes)
+
+Mark Packets: edit, or right click menu to mark/unmark (shown in black the packet will be, renewed every file session - marked packets will be lost after closing file)
+
+Packet comments
+
+Export packets: under file, can export specified packets (like exporting only packets you know dont need more investigating to focus more on those that do)
+Export objects: extract files transferred through wire
+- vital to discover shared files
+- some packets transfer full files
+
+Time display format: shows time in seconds since beginning of capture --> UTC time format under view -> time display format
+
+Expert info: 
+- chat - blue - info on usual workflow
+- note - cyan - notable events like app error codes
+- warn - yellow - warnings like unusual error codes or problem statements
+- error - red - problems like malformed packets
+analyse -> expert information to view
+
+TASKS
+- Located string called "r4w" via ctrl f to investigate
+- went through packets to read comments, exported packet bytes of a jpeg file, then used the terminal w/ command md5sum <filename> to get the md5 hash
+- through export objects, i found the txt file, saved it, opened it and found text
+- through expert information, i found the # of warnings
+
+Capture filters capture, display filters view
+Can filter traffic by using queries or right-click menu
+
+Apply as Filter: analyse -> apply as filter for stuff like ip.src or ip.dst
+
+Conversation filter: analyse -> conversation filter investigate a specific packet number and all linked packets, focusing on ip addresses and port #s
+
+Colourise conversation under view to highlight linked packets w/o applying display filter and descreasing # of viewed packets
+
+Prepare as filter: similar to apply as filter, but doesnt apply filters after choice, ppl can use and/or commands for more filtering
+
+Apply as column --> analyse -> apply as column to organize by tpe (ex: ipv4)
+
+Follow stream: follow traffic streams with analyse -> follow TCP/UDP/HTTP stream
+- reconstructs and displays data flow of network stream like TCP connection as a single, continuous sequence of bytes. See data exchanged btwn 2 endpoints to make easier analysis of the comms pattern
+
+TASK
+- selected a packet, right clicked HTTP and applied it as a filter through right click route. Saw it displayed 1089 packets
+- went to packet 33790, went to export objects, http, put filter artist (clicked first one), saved it as a document on my desktop, opened the php file in pluma, and found the artist lines
