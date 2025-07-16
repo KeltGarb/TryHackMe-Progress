@@ -1,0 +1,74 @@
+Tcpdump the basics
+
+Tcpdump and libpcap library
+- windows --> winpcap
+
+BASIC PACKET CAPTURE
+- i INTERFACE, i -any, i -eth0 for listening to a network face / types of
+ip address show --> available network interfaces listed
+
+tcpdump -i INTERFACE --> packets captured from specific interface
+tcpdump -w FILE --> writes captured packets TO a file
+tcpdump - r FILE --> read captured packets FROM a file
+tcpdump -c COUNT --> counts specific # of packets 
+tcpdump -n --> dont resolve ip addresses
+tcpdump -nn --> dont resolve IP addresses and protocol #s
+tcpdump -v --> verbose (can do -vv and -vvv)
+
+-i wlo1 --> wifi interface
+
+FILTERING EXPRESSIONS
+logical operators: and, or, not
+
+tcpdump host IP or HOSTNAME
+tcpdump  src...
+tcpdump dst...
+tcpdump port #
+tcpdump src port...
+tcpdump dst port...
+tcpdump PROTOCOL (ip, ip6, icmp, arp...)
+
+TASK:
+1. found how many packets were in a pcap file w/ the ICPM protocol --> sudo tcpdump -r traffic.pcap icmp -n | wc
+2. found ip address of host from a mac address --> sudo tcpdump -r traffic.pcap arp and host 192.168.124.137
+3. found hostname in first dns query --> sudo tcpdump -r traffic.pcap port 53
+
+ADVANCED FILTERING
+greater LENGTH
+less LENGTH
+man pcap-filter --> manual page
+
+binary operations & (and), | (or), ! (not)
+
+header bytes: proto[expr:size]
+- proto = protocol
+- expr = byte size, 0 refers to first byte
+- size = # of bytes that interest us (1, 2, or 4; 1 is default)
+
+tcp-syn
+tcp-ack
+tcp-fin
+tcp-rst
+tcp-push
+
+tcp[tcpflags]
+tcpdump 'tcp[tcpflags] == tcp-syn' (ONLY capture packets w/ SYN flag set)
+tcpdump 'tcp[tcpflags] & tcp-syn != 0' (capture packets w/ AT LEAST SYN flag set) 
+tcpdump 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0' (capture packets with AT LEAST SYN OR ACK)
+
+TASK
+1. found # of packets only w/ tcp reset --> sudo tcpdump -r traffic.pcap 'tcp[tcpflags] == tcp-rst' | wc -l
+2. ip address found that sent packets >15000 bytes --> sudo tcpdump -r traffic.pcap 'greater 15000' -n
+
+DISPLAYING PACKETS
+-q quick output;brief packet info
+-e print link level header
+-A show packet data in ASCII
+-xx show packet data in hex format
+-X show in -xx and -A format
+
+TASK
+1. found mac address of host that sent arp request --> sudo tcpdump -r traffic.pcap arp -e
+
+
+
