@@ -1,0 +1,73 @@
+NMAP: The Basics
+- NMAP: can help you identify hosts on the same or other networks, or network services on these live devices (SSH and web services)
+
+HOST DISCOVERY: WHO IS ONLINE
+
+scan ip range --> 192.168.0.1-10
+ip subnet using / --> scan subnet --> 192.168.0.1/24 which is same as 192.168.0.0-255
+can identify target by hostname --> example.thm
+
+discover online hosts on network --> -sn
+- ping scan, not limited like ping though
+
+Read up on scanning a local network --> nmap -sn 192....../24
+- can look at MAC addresses of these debices this way
+- nmap starts by sending arp requests
+
+-sL --> lists targets to scan w/o actually scanning them
+-sn --> discover live hosts w/o attempting to discover services running on them
+
+TASK
+- what was the last ip address that will be scanned when your scan target is 192.168.0.1/27 --> nmap -sL 192.168.0.1/27 got me the answer
+
+PORT SCANNING: WHO IS LISTENING
+-sT tries to connect TCP 3 way handshake w/ every tcp port
+-sS --> select SYN scan
+-sU --> UDP services
+limit targeting ports:
+-F --> fast mode, scans 100 most common ports rather than default of 1k vy nmap
+-p[range] allows range of ports (ex: -p10-100)
+   - -p- scans all ports
+
+TASK
+1. find how many tcp ports are open at target system 10.10.25.105 --> nmap -sT 10.10.25.105
+
+VERSION DETECTION: EXTRACT MORE INFORMATION
+
+enable OS detection w/ -O option (usually not 100% accurate btw)
+-sV --> enables verstion detection of services you found running
+- can have both -O and -sV and more with -A
+
+when running port scan, -sS for exm, target host might not reply during host discovery phase (host wont reply to icmp request)
+- ask nmap to treat all hosts as online and port scan every host --> -Pn
+
+TASK
+1. find name and detected version of web server running on 10.10.25.105 --> did this by doing nmap -A 10.10.25.105 (could have done -sV)
+
+TIMING: HOW FAST IS FAST
+
+can control how fast a scan should go! this might help as running your scan at its normal speed might trigger IDS or other security solutions
+nmap gives you 6 timing templates to control scan speed: 
+0 = paranoid
+1 = sneaky
+2 = polite
+3 = normal
+4 = aggressive
+5 = insane
+
+can do parallel service probes
+controlled with --min-parallelism <numprobes> and --max-parallelism <numprobes>
+set min and max num of tcp/udp port probes active simultaneously for a host group. nmap by default controls # of parallel probes.
+network bad, probes might go down, if good, might go up
+similar: --min-rate <number> or --max-rate <number> --> rates controlled for which nmap sends packets
+--host-timeout <time>  --> max time to wait for target host
+
+OUTPUT: CONTROL WHAT YOU SEE
+-v --> verbose (can do -vv, -vvv, -v2, etc.)
+-d debugging-level output (up to -d9)
+
+save scanning report:
+-oN <filename> normal output
+-oX <filename> xml output
+-oG <filename> grep-able output (grep and awk)
+-oA <basename> output in all major formats
