@@ -1,0 +1,29 @@
+IMPORTANCE OF CRYPTOGRAPHY
+- backgroud into purpose of the concept with CIA, SSH, remote server certificates, hash functions, etc.
+- PCI DSS: security related to credit card data
+- HIPPA
+- HITECH
+- GDPR
+
+PLAINTEXT TO CIPHERTEXT
+- basics of each term
+- key encrypts plaintext to ciphertext
+
+HISTORICAL CIPHERS
+- Caesar cipher
+
+TYPES OF ENCRYPTION
+- symmetric (1 key) and some methods
+- asymmetric (2 keys) and some methods
+
+BASIC MATH
+- XOR operation: think OR rules like for python
+- ⊕
+- can use it with cryptography like this: assigning XOR to a value with itself resulting in 0, and applying XOR to any value with 0 leaves it unchanged
+- Modulo operation
+- %
+- remainder when x is divided by y (integers only, no floats)
+TASK
+- what's 1001 ⊕ 1010 --> 0011 (did this by just putting one # over the other, if same #, then 1, if different #, then 0)
+- what's 118613842%9091 --> 3565: multiplied 9091 by the highest integer # possible before getting to 118613842, and found the difference
+- 60%12 --> 12 fits 5x in 60, so no remainder, thus 0
